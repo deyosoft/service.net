@@ -60,11 +60,14 @@ var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
 	navigateFormApp.controller('mainController', function($scope) {
 	});
 	
-	navigateFormApp.controller('homeController', function($scope) {
+	navigateFormApp.controller('homeController', ['$scope', '$location', function($scope, $location) {
 		// create a message to display in our view
 		$scope.message = 'homeController';
+		$scope.$on('$viewContentLoaded', function() {
+			mapInitializer.initMap($location);			
+		});
 		setNextPrevious($scope.$parent, null, null);
-	});
+	}]);
 
 	navigateFormApp.controller('locationController', function($scope) {
 		$scope.message = 'locationController';
