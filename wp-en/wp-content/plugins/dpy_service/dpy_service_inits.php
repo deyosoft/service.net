@@ -53,6 +53,14 @@ class Services_Plugin_Initializator {
 		// create custom posts
 		add_action( 'init', array( $this, 'register_service_post' ) );
 		add_action( 'init', array( $this, 'register_service_post_taxonomies' ) );
+		
+		add_action('wp_json_server_before_serve', array( $this, 'servicePostType_restApi_inits' ));
+	}
+	
+	public function servicePostType_restApi_inits($server){		
+		require_once dirname( __FILE__ ) . '/dpy_service_rest_api.php';
+		$serviceApi = new Dpy_ServicePostType_RestApi($server);
+		$serviceApi->register_filters();
 	}
 	
 	public function register_service_post() {
