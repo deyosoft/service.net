@@ -1,85 +1,40 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us" ng-app="navigateFormApp">
 
 <head>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="">
-
-<title>Handy man</title>
-<base href="Handy man" target="_blank">
-<meta charset="UTF-8">
-<meta name="description" content="Handy man">
-<meta name="keywords" content="handy,man,worker,workers,job,done">
-<meta name="author" content="Kalin Kalinkov">
-
-<script>
-$(document).ready(function(){
-    $("#hide").click(function(){
-        $("p").hide();
-    });
-    $("#show").click(function(){
-        $("p").show();
-    });
-});
-</script>
-
+	<title>Handy man</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Handy man">
+	<meta name="keywords" content="handy,man,worker,workers,job,done">
+	<meta name="author" content="Kalin Kalinkov">
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/style.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+	<script src="scripts/script.js"></script>
 </head>
 
-<body>
+<body ng-controller="mainController" >
 
-<div class="container">
+<div class="login-header">
 	<form>
-		<div class="inner">
-		User
-		<input type="text" name="user">
-		</div>
-		
-		<a href="#" class="btn btn-info" role="button" target="self">Log out</a>
-		<br>
-		Pass
-		<input type="text" name="pass">
-		<br>
-		Confirm Pass
-		<input class="hidden" type="text" name="confirmpass">
-		<br>
-		E-mail
-		<input class="hidden" type="text" name="email">
-		<br>
-		Adress
-		<input class="hidden" type="text" name="adress">
-		<br>
-		<a href="#" class="btn btn-info" role="button" target="self">Register</a>
-		<br>
-		<a href="#" class="btn btn-info" role="button" target="self">Log in</a>
+		LOGIN FORM
 	</form>
 </div>
-
-<h2>Choose location and survice<h2/>
-
-<div class="container">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">For home
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Electricals</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Painting</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Windows</a></li>
-    </ul>
-  </div>
+<div class="navigation-content">
+	<h2>Choose location and service<h2/>
+	<div ng-view></div>
+	<div>
+		<a href="{{ previousButtonLink }}" class="{{ hidePrevious}}">Previous</a>
+		<a href="{{ nextButtonLink }}" class="{{ hideNext }}">Next</a>
+	</div>
 </div>
-
-<div class="container">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">For the car
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Tyres</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Painting</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Fixing</a></li>
-    </ul>
-  </div>
+<div class="footer">
+	Footer
 </div>
 
 </body>
