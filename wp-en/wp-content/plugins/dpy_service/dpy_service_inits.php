@@ -55,9 +55,21 @@ class Services_Plugin_Initializator {
 		add_action( 'init', array( $this, 'register_service_post' ) );
 		add_action( 'init', array( $this, 'register_service_post_taxonomies' ) );
 		
+		add_action( 'admin_head', array( $this, 'add_admin_css' ) );
 		add_action('wp_json_server_before_serve', array( $this, 'servicePostType_restApi_inits' ));		
 		add_filter( 'json_query_var-posts_per_page', array( $this, 'restrict_posts_per_page_filter' ));
 		add_filter( 'json_query_vars', array( $this, 'prepare_pagination_offset_variable' ));
+	}
+	
+	function add_admin_css(){ ?>
+	     <style>
+	     .column-description p {
+			  white-space: nowrap;
+			  overflow: hidden;
+			  text-overflow: ellipsis;
+	     }
+	     </style>
+	<?php
 	}
 	
 	public function prepare_pagination_offset_variable($valid_vars) {

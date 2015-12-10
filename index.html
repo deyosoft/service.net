@@ -22,21 +22,58 @@
 
 <body ng-controller="mainController" >
 
-<div class="login-header">
-	<form>
-		LOGIN FORM
-	</form>
-</div>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" style="color:#FFFFFF" href="#">Handy man</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
 <div class="navigation-content">
 	<div ng-view></div>
-	<div>
-		<a href="{{ previousButtonLink }}" class="{{ hidePrevious}}">Previous</a>
-		<a href="{{ nextButtonLink }}" class="{{ hideNext }}">Next</a>
+	<!--
+	<div class="jumbotron">
+	    <div class="panel panle-default">
+			<div class="panel-footer">
+				<ul class="pagination">
+					<li><a href="http://localhost/service.net/kalin%20templates/">home</a></li>
+					<li><a href="http://localhost/service.net/kalin%20templates/categories.html">categories</a></li>
+					<li><a href="http://localhost/service.net/kalin%20templates/subcategories.html">subcategories</a></li>
+					<li><a href="http://localhost/service.net/kalin%20templates/list.html">list</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
+	-->
 </div>
-<div class="footer">
-	Footer
-</div>
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="row" style="position:fixed; bottom: 0px; width:100%">
+			<div class="col-sm-3">
+				<a id="main" href="#">Help</a>
+			</div>
+			<div class="col-sm-6">
+				<small id="main">Copyright ImEx Product Company 2016</small>
+			</div>
+			<div class="col-sm-3">
+				<a id="main" href="#">About</a>
+			</div>
+		</div>
+	</div>
+</nav>
 
 </body>
 </html>
