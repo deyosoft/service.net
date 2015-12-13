@@ -2,22 +2,28 @@
 <html lang="en-us" ng-app="navigateFormApp">
 
 <head>
+	<!-- 
+	Rewrites settings in server needed to work with html5mode! 
+	See this link: https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode
+	<base href="http://localhost/service.net/" >	
+	--> 
 	<title>Handy man</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Handy man">
 	<meta name="keywords" content="handy,man,worker,workers,job,done">
 	<meta name="author" content="Kalin Kalinkov">
-	
+		
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="styles/style.css">
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-route.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	<script src="scripts/script.js"></script>
 	<script src="scripts/mapInitializer.js"></script>
+	<script src="scripts/script.js"></script>
+	
 </head>
 
 <body ng-controller="mainController" >
@@ -42,21 +48,7 @@
 </nav>
 
 <div class="navigation-content">
-	<div ng-view></div>
-	<!--
-	<div class="jumbotron">
-	    <div class="panel panle-default">
-			<div class="panel-footer">
-				<ul class="pagination">
-					<li><a href="http://localhost/service.net/kalin%20templates/">home</a></li>
-					<li><a href="http://localhost/service.net/kalin%20templates/categories.html">categories</a></li>
-					<li><a href="http://localhost/service.net/kalin%20templates/subcategories.html">subcategories</a></li>
-					<li><a href="http://localhost/service.net/kalin%20templates/list.html">list</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	-->
+	<div ng-view></div>	
 </div>
 
 <nav class="navbar navbar-default">
