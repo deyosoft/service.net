@@ -59,23 +59,29 @@ var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
 	navigateFormApp.controller('mainController', function($scope) {
 	});
 	
-	navigateFormApp.controller(routeControllers.home, ['$scope', '$location', function($scope, $location) {
+	navigateFormApp.controller(routeControllers.home, ['$scope', '$http', function($scope, $http) {
 		// create a message to display in our view
 		$scope.message = routeControllers.home;
-		$scope.$on('$viewContentLoaded', function() {
-			mapInitializer.initMap($location);			
+		$scope.$on('$viewContentLoaded', function() {			
+			mapInitializer.initMap($http);
 		});
 	}]);
 
-	navigateFormApp.controller(routeControllers.categories, ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+	navigateFormApp.controller(routeControllers.categories, ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 		$scope.message = routeControllers.categories;
-		$scope[routeVariables.categoryId] = $routeParams[routeVariables.categoryId];
-		$scope[routeVariables.locationId] = $routeParams[routeVariables.locationId];
+		$scope.locationSlug = $routeParams[routeVariables.locationId];
+		wpAjax.getLocation($http, $scope.locationSlug, function(locationJson){
+			$scope["locationName"] = locationJson.name;
+		});
+		wpAjax.getCategories($http, $scope.locationSlug, $routeParams[routeVariables.categoryId], function(categories){
+			$scope["categories"] = categories;
+		});
 	}]);
 
-	navigateFormApp.controller(routeControllers.results, ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+	navigateFormApp.controller(routeControllers.results, ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 		$scope.message = routeControllers.results;
-		$scope[routeVariables.categoryId] = $routeParams[routeVariables.categoryId];
-		$scope[routeVariables.locationId] = $routeParams[routeVariables.locationId];
+		wpAjax.getSearchResults($http, $routeParams[routeVariables.locationId], $routeParams[routeVariables.categoryId], function(services){
+			$scope["services"] = services;
+		});
 	}]);
 })();
