@@ -1,5 +1,11 @@
 <div>	
 	<p>{{ message }}</p>
-	<p>Category: {{category}}</p>
-	<p>Location: {{location}}</p>
+	
+	<ul>
+		<li ng-repeat="x in services">
+			<h3>{{x.title}}</h3>
+			<div>{{x.content}}</div>
+			<p>Published by {{x.author.nickname}}</p>
+		</li>
+	</ul>
 </div>

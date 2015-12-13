@@ -1,27 +1,6 @@
 var mapInitializer = {};
 
 (function(){	
-	function getUrlStart(absUrl){
-		var i = 0;
-		var slashCount = 0;
-		var urlStart = "";
-		var slash = '/';
-		
-		for(; i < absUrl.length; i+=1){
-			if(absUrl[i] == slash){
-				slashCount+=1;
-				if(slashCount == 4){
-					break;
-				}
-			}
-			
-			urlStart += absUrl[i];
-		}
-		
-		urlStart += slash;
-		
-		return urlStart;
-	}
 	
 	function convertCoordinatesFromList(coordinatesList){
 		var mapCoordinates = [];			  
@@ -50,38 +29,53 @@ var mapInitializer = {};
 		return mapCoordinates;
 	}
 
-	function drawLocations($location, map){
-		var absUrl = $location.$$absUrl;
-		var urlStart = getUrlStart(absUrl);
-		var locationsRestUrl = "wp-en/wp-json/taxonomies/locationTaxonomy/terms";
-		var url = urlStart + locationsRestUrl;
-		$.get( url, function( data ) {
-		var locations = data;
+	function drawLocations($http, map){				
+		wpAjax.getLocations($http, function(locations) {
+			var infoWindow = new google.maps.InfoWindow();
+			
+			for(var i = 0; i < locations.length; i+=1){
+				var coordinates = JSON.parse(locations[i].description);
+					  
+				var mapCoordinates = convertCoordinatesFromList(coordinates);
+				//var mapCoordinates = convertCoordinatesFromMultiArrays(coordinates);
 
-		for(var i = 0; i < locations.length; i+=1){
-		  var coordinates = JSON.parse(locations[i].description);
-		  		  
-		  var mapCoordinates = convertCoordinatesFromList(coordinates);
-		  //var mapCoordinates = convertCoordinatesFromMultiArrays(coordinates);
-		  
-		  if(mapCoordinates.length == 0){
-			  continue;
-		  }
-		  
-		  var polygon = new google.maps.Polygon({
-			paths: mapCoordinates,
-			strokeColor: '#115140',
-			strokeOpacity: 0.8,
-			strokeWeight: 2,
-			fillColor: '#115140',
-			fillOpacity: 0.35
-		  });
-		  polygon.setMap(map);
-		}		  
+				if(mapCoordinates.length == 0){
+				  continue;
+				}
+
+				var polygon = new google.maps.Polygon({
+				paths: mapCoordinates,
+				strokeColor: '#115140',
+				strokeOpacity: 0.8,
+				strokeWeight: 2,
+				fillColor: '#115140',
+				fillOpacity: 0.35
+				});
+				
+				(function(categoriesUrl, infoText){
+					google.maps.event.addListener(polygon,"mouseover",function(e){ 
+						this.setOptions({fillOpacity: 0.8}); 
+						if(!infoWindow.getMap() || infoWindow.content != infoText){
+							infoWindow.close();
+							infoWindow.setPosition(e.latLng);
+							infoWindow.setOptions({content:infoText})
+							infoWindow.open(map);
+						}
+					}); 
+					google.maps.event.addListener(polygon,"mouseout",function(){
+						this.setOptions({fillOpacity: 0.35}); 
+					});
+					google.maps.event.addListener(polygon,"click",function(){ 
+						window.location.href = categoriesUrl; 
+					}); 
+				  
+					polygon.setMap(map);
+				})(wpAjax.urlStart + "#/categories/location/" + locations[i].slug, locations[i].name);
+			}	  
 		});
 	}
 
-	mapInitializer.initMap = function($location){
+	mapInitializer.initMap = function($http){
 		var defaultZoom = 6;
 		var mapCenterCoordinates = new google.maps.LatLng(53.28984728016674, -1.91162109375);
 		var style_England = [
@@ -89,12 +83,7 @@ var mapInitializer = {};
 			{ "featureType": "transit", "stylers": [ { "visibility": "off" } ] },
 			{ "featureType": "road", "stylers": [ { "visibility": "off" } ] },
 			{ "featureType": "poi", "stylers": [ { "visibility": "off" } ] },
-			{ "featureType": "administrative.land_parcel", "stylers": [ { "visibility": "off" } ] },
-			{ "featureType": "administrative.neighborhood", "stylers": [ { "visibility": "off" } ] },
-			{ "featureType": "administrative.province", "stylers": [ { "visibility": "off" } ] },
-			{ "featureType": "administrative.country", "stylers": [ { "visibility": "simplified" } ] },
-			{ "featureType": "administrative.locality", "elementType": "geometry", "stylers": [ { "visibility": "off" } ] },
-			{ "featureType": "administrative.locality", "elementType": "labels", "stylers": [ { "visibility": "simplified" } ] },
+			{ "featureType": "administrative", "stylers": [ { "visibility": "off" } ] },
 			{ "featureType": "landscape.man_made", "stylers": [ { "visibility": "off" } ] },
 			{ "featureType": "landscape.natural", "stylers": [ { "visibility": "simplified" }, { "color": "#ffffff" } ] }
 		];
@@ -111,7 +100,7 @@ var mapInitializer = {};
 		var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 		map.mapTypes.set('map_styles_England', England);
 		map.setMapTypeId('map_styles_England');
-		drawLocations($location, map);
+		drawLocations($http, map);
 	};
 })();
 
