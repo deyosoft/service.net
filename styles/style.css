@@ -1,11 +1,39 @@
-.login-header{
-	background:red;
+.navbar {
+	background-color: #115140;
+	margin-bottom: 0;
 }
-
-.footer{
-	background:blue;
+.navbar-default {
+	background-color: #115140;
+	margin-bottom: 0;
 }
-
-.navigation-content{
-	background:yellow;
+.jumbotron {
+	background-color: white;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.container {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.panel {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.panel-footer {
+	background-color: #115140;
+}
+.span {
+	color: #000000;
+}
+#main {
+	color: #FFFFFF;
+}
+.row {
+	background-color: #115140;
+}
+.col-sm-3 {
+	text-align: center;	
+}
+.col-sm-6 {
+	text-align: center;	
 }

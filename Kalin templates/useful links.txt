@@ -1,0 +1,6 @@
+http://martinjc.github.io/UK-GeoJSON/
+https://developers.google.com/maps/documentation/javascript/datalayer
+https://developers.google.com/maps/documentation/javascript/examples/layer-fusiontables-styling
+http://www.w3resource.com/API/google-maps/google-maps-class-propertes-controls.php
+http://webdesign.tutsplus.com/tutorials/getting-creative-with-the-google-maps-api--webdesign-13380
+http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html

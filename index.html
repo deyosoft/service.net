@@ -2,41 +2,70 @@
 <html lang="en-us" ng-app="navigateFormApp">
 
 <head>
+	<!-- 
+	Rewrites settings in server needed to work with html5mode! 
+	See this link: https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode
+	<base href="http://localhost/service.net/" >	
+	--> 
 	<title>Handy man</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Handy man">
 	<meta name="keywords" content="handy,man,worker,workers,job,done">
 	<meta name="author" content="Kalin Kalinkov">
-	
+		
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="styles/style.css">
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-route.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	<script src="scripts/script.js"></script>
 	<script src="scripts/mapInitializer.js"></script>
+	<script src="scripts/script.js"></script>
+	
 </head>
 
 <body ng-controller="mainController" >
 
-<div class="login-header">
-	<form>
-		LOGIN FORM
-	</form>
-</div>
-<div class="navigation-content">
-	<div ng-view></div>
-	<div>
-		<a href="{{ previousButtonLink }}" class="{{ hidePrevious}}">Previous</a>
-		<a href="{{ nextButtonLink }}" class="{{ hideNext }}">Next</a>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" style="color:#FFFFFF" href="#">Handy man</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
 	</div>
+</nav>
+
+<div class="navigation-content">
+	<div ng-view></div>	
 </div>
-<div class="footer">
-	Footer
-</div>
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="row" style="position:fixed; bottom: 0px; width:100%">
+			<div class="col-sm-3">
+				<a id="main" href="#">Help</a>
+			</div>
+			<div class="col-sm-6">
+				<small id="main">Copyright ImEx Product Company 2016</small>
+			</div>
+			<div class="col-sm-3">
+				<a id="main" href="#">About</a>
+			</div>
+		</div>
+	</div>
+</nav>
 
 </body>
 </html>

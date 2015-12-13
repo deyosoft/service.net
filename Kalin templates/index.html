@@ -1,86 +1,175 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
 <head>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="">
-
-<title>Handy man</title>
-<base href="Handy man" target="_blank">
-<meta charset="UTF-8">
-<meta name="description" content="Handy man">
-<meta name="keywords" content="handy,man,worker,workers,job,done">
-<meta name="author" content="Kalin Kalinkov">
-
-<script>
-$(document).ready(function(){
-    $("#hide").click(function(){
-        $("p").hide();
-    });
-    $("#show").click(function(){
-        $("p").show();
-    });
-});
-</script>
-
+	<title>Handy man</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Handy man">
+	<meta name="keywords" content="handy,man,worker,workers,job,done">
+	<meta name="author" content="Kalin Kalinkov">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	
+	<style>
+	.navbar {
+		background-color: #115140;
+		margin-bottom: 0;
+	}
+	.navbar-default {
+		background-color: #115140;
+		margin-bottom: 0;
+	}
+	.jumbotron {
+		background-color: white;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.container {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.panel {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.panel-footer {
+		background-color: #115140;
+	}
+	.span {
+		color: #000000;
+	}
+	#main {
+		color: #FFFFFF;
+	}
+	.row {
+		background-color: #115140;
+	}
+	.col-sm-3 {
+		text-align: center;	
+	}
+	.col-sm-6 {
+		text-align: center;	
+	}
+	</style>
+	
 </head>
 
 <body>
 
-<div class="container">
-	<form>
-		<div class="inner">
-		User
-		<input type="text" name="user">
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" style="color:#FFFFFF" href="#">Handy man</a>
 		</div>
-		
-		<a href="#" class="btn btn-info" role="button" target="self">Log out</a>
-		<br>
-		Pass
-		<input type="text" name="pass">
-		<br>
-		Confirm Pass
-		<input class="hidden" type="text" name="confirmpass">
-		<br>
-		E-mail
-		<input class="hidden" type="text" name="email">
-		<br>
-		Adress
-		<input class="hidden" type="text" name="adress">
-		<br>
-		<a href="#" class="btn btn-info" role="button" target="self">Register</a>
-		<br>
-		<a href="#" class="btn btn-info" role="button" target="self">Log in</a>
-	</form>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a id="main" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="jumbotron text-center">
+	<h2 style="color:#115140">Choose location for the service</h2>
 </div>
 
-<h2>Choose location and survice<h2/>
+<div class="jumbotron">
+	<div class="container-fluid">
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<div class="container">
+			<div id="map-canvas" style="width: 500px; height: 500px; margin: auto;"></div>
+		</div>
+		<script>
+		(function(){
+			function initMap(){
+				var defaultZoom = 6;
+				var mapCenterCoordinates = new google.maps.LatLng(53.28984728016674, -1.91162109375);
+				var style_England = [
+					{ "featureType": "water", "stylers": [ { "visibility": "simplified" }, { "color": "#67b8df" } ] },
+					{ "featureType": "transit", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "road", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "poi", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "administrative.land_parcel", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "administrative.neighborhood", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "administrative.province", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "administrative.country", "stylers": [ { "visibility": "simplified" } ] },
+					{ "featureType": "administrative.locality", "elementType": "geometry", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "administrative.locality", "elementType": "labels", "stylers": [ { "visibility": "simplified" } ] },
+					{ "featureType": "landscape.man_made", "stylers": [ { "visibility": "off" } ] },
+					{ "featureType": "landscape.natural", "stylers": [ { "visibility": "simplified" }, { "color": "#115140" } ] }
+					]
+				var England = new google.maps.StyledMapType(style_England, {name: "England style"});
+				var mapOptions = {
+					zoom: defaultZoom,
+					center: mapCenterCoordinates,
+					panControl: false,
+					mapTypeControl: false,
+					mapTypeControlOptions: {
+						mapTypeIds: ['map_styles_England']
+						}
+				};
+				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				map.mapTypes.set('map_styles_England', England);
+				map.setMapTypeId('map_styles_England');
+			}
 
-<div class="container">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">For home
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Electricals</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Painting</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Windows</a></li>
-    </ul>
-  </div>
+			google.maps.event.addDomListener(window, 'load', initMap);
+		})();
+		</script>
+	</div>
+</div>
+<!--
+<div class="jumbotron">
+    <div class="panel panle-default">
+		<div class="panel-footer">
+			<ul class="pagination">
+				<li><a href="http://localhost/service.net/kalin%20templates/">home</a></li>
+				<li><a href="http://localhost/service.net/kalin%20templates/categories.html">categories</a></li>
+				<li><a href="http://localhost/service.net/kalin%20templates/subcategories.html">subcategories</a></li>
+				<li><a href="http://localhost/service.net/kalin%20templates/list.html">list</a></li>
+			</ul>
+		</div>
+	</div>
 </div>
 
-<div class="container">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">For the car
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Tyres</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Painting</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Fixing</a></li>
-    </ul>
-  </div>
-</div>
+[ 
+	{ "featureType": "water", "stylers": [ { "visibility": "simplified" }, { "color": "#67b8df" } ] },
+	{ "featureType": "transit", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "road", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "poi", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "administrative.land_parcel", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "administrative.neighborhood", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "administrative.province", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "administrative.country", "stylers": [ { "visibility": "simplified" } ] },
+	{ "featureType": "administrative.locality", "elementType": "geometry", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "administrative.locality", "elementType": "labels", "stylers": [ { "visibility": "simplified" } ] },
+	{ "featureType": "landscape.man_made", "stylers": [ { "visibility": "off" } ] },
+	{ "featureType": "landscape.natural", "stylers": [ { "visibility": "simplified" }, { "color": "#115140" } ] } 
+]
+
+-->
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="row" style="position:fixed; bottom: 0px; width:100%">
+			<div class="col-sm-3">
+				<a id="main" href="#">Help</a>
+			</div>
+			<div class="col-sm-6">
+				<small id="main">Copyright ImEx Product Company 2016</small>
+			</div>
+			<div class="col-sm-3">
+				<a id="main" href="#">About</a>
+			</div>
+		</div>
+	</div>
+</nav>
 
 </body>
 </html>

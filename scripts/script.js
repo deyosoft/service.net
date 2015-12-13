@@ -2,85 +2,80 @@
 var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
 
 (function(){
+	var routeVariables = {
+		locationId : "location",
+		categoryId : "category",
+	};
 	var routes = {
 		home : "/",
-		location : "/location",
-		service : "/service",
-		results: "/results"
+		categories : "/categories/location/:"+routeVariables.locationId,
+		subcategories: "/categories/:"+routeVariables.categoryId+"/location/:"+routeVariables.locationId,
+		results: "/searchResults/:" + routeVariables.categoryId+"/location/:"+routeVariables.locationId,
+	};
+	var routeControllers = {
+		home : 'homeController',
+		categories : 'categoriesController',
+		results : 'resultsController',
 	};
 	
 	// configure our routes
-	navigateFormApp.config(function($routeProvider) {
+	navigateFormApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 		$routeProvider
 
 			// route for the home page
 			.when(routes.home, {
 				templateUrl : 'pages/home.html',
-				controller  : 'homeController'
+				controller  : routeControllers.home,
 			})
 
-			// route for the location page
-			.when(routes.location, {
-				templateUrl : 'pages/location.html',
-				controller  : 'locationController'
+			// route for the categories in location page
+			.when(routes.categories, {
+				templateUrl : 'pages/categories.html',
+				controller  : routeControllers.categories
 			})
-
-			// route for the service page
-			.when(routes.service, {
-				templateUrl : 'pages/service.html',
-				controller  : 'serviceController'
+						
+			// route for the categories in location page
+			.when(routes.subcategories, {
+				templateUrl : 'pages/categories.html',
+				controller  : routeControllers.categories
 			})
 
 			// route for the results page
 			.when(routes.results, {
-				templateUrl : 'pages/results.html',
-				controller  : 'resultsController'
-			});
-	});
-	
-	function setNextPrevious($scope, previous, next){		
-		if(previous){
-			$scope.hidePrevious = "";
-			$scope.previousButtonLink = "#" + previous;
-		}
-		else{
-			$scope.hidePrevious = "ng-hide";
-		}
-		
-		if(next){
-			$scope.hideNext = "";
-			$scope.nextButtonLink = "#" + next;
-		}
-		else{
-			$scope.hideNext = "ng-hide";
-		}
-	};
+				templateUrl : 'pages/searchResults.html',
+				controller  : routeControllers.results
+			})
+
+			.otherwise({
+		        redirectTo: routes.home
+		    });
+
+			// Rewrites settings in server needed to work with html5mode! 
+			// See this link: https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode		
+			// $locationProvider.html5Mode(true);
+	}]);
 
 	// create the controller and inject Angular's $scope
 	navigateFormApp.controller('mainController', function($scope) {
 	});
 	
-	navigateFormApp.controller('homeController', ['$scope', '$location', function($scope, $location) {
+	navigateFormApp.controller(routeControllers.home, ['$scope', '$location', function($scope, $location) {
 		// create a message to display in our view
-		$scope.message = 'homeController';
+		$scope.message = routeControllers.home;
 		$scope.$on('$viewContentLoaded', function() {
 			mapInitializer.initMap($location);			
 		});
-		setNextPrevious($scope.$parent, null, null);
 	}]);
 
-	navigateFormApp.controller('locationController', function($scope) {
-		$scope.message = 'locationController';
-		setNextPrevious($scope.$parent, null, routes.service);
-	});
+	navigateFormApp.controller(routeControllers.categories, ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+		$scope.message = routeControllers.categories;
+		$scope[routeVariables.categoryId] = $routeParams[routeVariables.categoryId];
+		$scope[routeVariables.locationId] = $routeParams[routeVariables.locationId];
+	}]);
 
-	navigateFormApp.controller('serviceController', function($scope) {
-		$scope.message = 'serviceController';
-		setNextPrevious($scope.$parent, routes.location, routes.results);
-	});
-
-	navigateFormApp.controller('resultsController', function($scope) {
-		$scope.message = 'resultsController';
-		setNextPrevious($scope.$parent, routes.service, null)
-	});
+	navigateFormApp.controller(routeControllers.results, ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+		$scope.message = routeControllers.results;
+		$scope[routeVariables.categoryId] = $routeParams[routeVariables.categoryId];
+		$scope[routeVariables.locationId] = $routeParams[routeVariables.locationId];
+	}]);
 })();
