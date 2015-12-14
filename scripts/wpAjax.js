@@ -1,6 +1,6 @@
 var wpAjax = {};
 
-(function(){	
+(function(){		
 	function getUrlStart(absUrl){
 		var i = 0;
 		var slashCount = 0;
@@ -22,12 +22,13 @@ var wpAjax = {};
 		
 		return urlStart;
 	}
+	
+	wpAjax.getPostsPerPage = function() { return 100; };
+	wpAjax.urlStart = getUrlStart(window.location.href);
 			
 	function getData($http, url, onData){
 		$http.get(url).success(function(data) { onData(data) });
 	}
-	
-	wpAjax.urlStart = getUrlStart(window.location.href);
 	wpAjax.getLocations = function($http, onLocations){
 		var locationsRestUrl = "wp-en/wp-json/taxonomies/locationTaxonomy/terms";
 		var url = wpAjax.urlStart + locationsRestUrl;	
@@ -38,6 +39,7 @@ var wpAjax = {};
 			for(var i = 0; i < locations.length; i+=1){
 				if(locations[i].slug == slug){
 					onLocation(locations[i]);
+					break;
 				}
 			}
 		});
@@ -49,6 +51,16 @@ var wpAjax = {};
 			onCategories(allCategories);
 		});
 	};
+	wpAjax.getCategory = function($http, slug, onCategory){
+		getAllCategories($http, function(allCategories){
+			for(var i = 0; i < allCategories.length; i+=1){
+				if(allCategories[i].slug == slug){
+					onCategory(allCategories[i]);
+					break;
+				}
+			}
+		});
+	}
 	function buildCategoriesParentTree(allCategories){
 		var tree = {};
 		
@@ -101,10 +113,12 @@ var wpAjax = {};
 		
 		return hasSameParent;
 	};
-	wpAjax.getSearchResults = function($http, locationSlug, categorySlug, onResults){
+	wpAjax.getSearchResults = function($http, locationSlug, categorySlug, pageIndex, onResults){
 		getAllCategories($http, function(allCategories){
 			var categoriesTree = buildCategoriesParentTree(allCategories);
-			var searchResultsRestUrl = "wp-en/wp-json/servicePostPlugin/services";
+			var postsPerPageFilter = 'filter[posts_per_page]=' + wpAjax.getPostsPerPage();
+			var offsetFilter = 'filter[offset]=' + pageIndex * wpAjax.getPostsPerPage();
+			var searchResultsRestUrl = "wp-en/wp-json/servicePostPlugin/services?" + postsPerPageFilter + "&" + offsetFilter;
 			var url = wpAjax.urlStart + searchResultsRestUrl;
 			
 			getData($http, url, function(allServices){
