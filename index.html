@@ -21,6 +21,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-route.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script src="scripts/wpAjax.js"></script>
 	<script src="scripts/mapInitializer.js"></script>
 	<script src="scripts/script.js"></script>
 	
@@ -40,8 +41,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a id="main" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-				<li><a id="main" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
 		</div>
 	</div>
@@ -51,17 +52,17 @@
 	<div ng-view></div>	
 </div>
 
-<nav class="navbar navbar-default">
+<nav>
 	<div class="container-fluid">
 		<div class="row" style="position:fixed; bottom: 0px; width:100%">
 			<div class="col-sm-3">
-				<a id="main" href="#">Help</a>
+				<a href="#">Help</a>
 			</div>
 			<div class="col-sm-6">
-				<small id="main">Copyright ImEx Product Company 2016</small>
+				<small>Copyright ImEx Product Company 2016</small>
 			</div>
 			<div class="col-sm-3">
-				<a id="main" href="#">About</a>
+				<a href="#">About</a>
 			</div>
 		</div>
 	</div>
