@@ -30,8 +30,8 @@ var mapInitializer = {};
 	}
 
 	function drawLocations($http, map){				
-		wpAjax.getLocations($http, function(locations) {
-			var infoWindow = new google.maps.InfoWindow();
+		wpAjax.getLocations($http, function(locations) {	
+			var infoBox = new InfoBox();
 			
 			for(var i = 0; i < locations.length; i+=1){
 				var coordinates = JSON.parse(locations[i].description);
@@ -55,22 +55,37 @@ var mapInitializer = {};
 				(function(categoriesUrl, infoText){
 					google.maps.event.addListener(polygon,"mouseover",function(e){ 
 						this.setOptions({fillOpacity: 0.8}); 
-						if(!infoWindow.getMap() || infoWindow.content != infoText){
-							infoWindow.close();
-							infoWindow.setPosition(e.latLng);
-							infoWindow.setOptions({content:infoText})
-							infoWindow.open(map);
-						}
+						infoBox.setOptions({
+							content: infoText,
+							boxStyle: {
+							   border: "1px solid black",
+							   background: "#ffffff",
+							   textAlign: "center",
+							   fontSize: "14pt",
+							   'width': "120px",
+							 },
+							 disableAutoPan: true,
+							 position: e.latLng,
+							 closeBoxURL: "",
+							 isHidden: false,
+							 pane: "mapPane",
+							 enableEventPropagation: true,
+						});
+						infoBox.open(map);
 					}); 
 					google.maps.event.addListener(polygon,"mouseout",function(){
 						this.setOptions({fillOpacity: 0.35}); 
+						infoBox.close();
 					});
 					google.maps.event.addListener(polygon,"click",function(){ 
 						window.location.href = categoriesUrl; 
 					}); 
 				  
 					polygon.setMap(map);
-				})(wpAjax.urlStart + "#/categories/location/" + locations[i].slug, locations[i].name);
+				})(
+						wpAjax.urlStart + "#/categories/location/" + locations[i].slug,
+						locations[i].name
+					);
 			}	  
 		});
 	}
