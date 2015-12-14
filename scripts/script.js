@@ -1,5 +1,5 @@
 // create the module and name it navigateFormApp
-var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
+var navigateFormApp = angular.module('navigateFormApp', ['ngRoute', 'ngSanitize']);
 
 (function(){
 	var routeVariables = {

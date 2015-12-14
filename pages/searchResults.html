@@ -6,7 +6,7 @@
 	<ul>
 		<li ng-repeat="x in services">
 			<h3>{{x.title}}</h3>
-			<div>{{x.content}}</div>
+			<div ng-bind-html="x.content"></div>
 			<p>Published by {{x.author.nickname}}</p>
 		</li>
 	</ul>
