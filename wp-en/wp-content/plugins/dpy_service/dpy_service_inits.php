@@ -40,7 +40,9 @@ class ServiceConstants {
 	const Plugin_Text_Domain = "servicePostPlugin";
 	const ServiceType_Taxonomy_Name = "serviceTypeTaxonomy";
 	const Location_Taxonomy_Name = "locationTaxonomy";
-	const Max_Posts_Per_Page = 10;
+	
+	// This value should be changed to 10 in production.
+	const Max_Posts_Per_Page = 100;
 	
 	static function init(){
 		// TODO: Define static variables here!

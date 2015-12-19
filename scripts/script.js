@@ -1,5 +1,5 @@
 // create the module and name it navigateFormApp
-var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
+var navigateFormApp = angular.module('navigateFormApp', ['ngRoute', 'ngSanitize']);
 
 (function(){
 	var routeVariables = {
@@ -69,18 +69,38 @@ var navigateFormApp = angular.module('navigateFormApp', ['ngRoute']);
 
 	navigateFormApp.controller(routeControllers.categories, ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 		$scope.message = routeControllers.categories;
-		$scope.locationSlug = $routeParams[routeVariables.locationId];
-		wpAjax.getLocation($http, $scope.locationSlug, function(locationJson){
+		var locationSlug = $routeParams[routeVariables.locationId];
+		var categorySlug = $routeParams[routeVariables.categoryId];
+		
+		if(categorySlug){
+			wpAjax.getCategory($http, categorySlug, function(categoryJson){
+				$scope["serviceDescription"] = categoryJson.name + " service subcategory";
+			});
+		}
+		else{
+			$scope["serviceDescription"] = "service category"
+		}
+		
+		wpAjax.getLocation($http, locationSlug, function(locationJson){
 			$scope["locationName"] = locationJson.name;
 		});
-		wpAjax.getCategories($http, $scope.locationSlug, $routeParams[routeVariables.categoryId], function(categories){
+		wpAjax.getCategories($http, locationSlug, categorySlug, function(categories){
 			$scope["categories"] = categories;
 		});
 	}]);
 
 	navigateFormApp.controller(routeControllers.results, ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 		$scope.message = routeControllers.results;
-		wpAjax.getSearchResults($http, $routeParams[routeVariables.locationId], $routeParams[routeVariables.categoryId], function(services){
+		var locationSlug = $routeParams[routeVariables.locationId];
+		var categorySlug = $routeParams[routeVariables.categoryId];
+		var pageIndex = 0;	
+		wpAjax.getLocation($http, locationSlug, function(locationJson){
+			$scope["locationName"] = locationJson.name;
+		});
+		wpAjax.getCategory($http, categorySlug, function(categoryJson){
+			$scope["categoryName"] = categoryJson.name;
+		});
+		wpAjax.getSearchResults($http, locationSlug, categorySlug, pageIndex, function(services){
 			$scope["services"] = services;
 		});
 	}]);

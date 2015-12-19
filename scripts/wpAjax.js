@@ -1,6 +1,6 @@
 var wpAjax = {};
 
-(function(){	
+(function(){		
 	function getUrlStart(absUrl){
 		var i = 0;
 		var slashCount = 0;
@@ -22,12 +22,13 @@ var wpAjax = {};
 		
 		return urlStart;
 	}
+	
+	wpAjax.getPostsPerPage = function() { return 100; };
+	wpAjax.urlStart = getUrlStart(window.location.href);
 			
 	function getData($http, url, onData){
 		$http.get(url).success(function(data) { onData(data) });
 	}
-	
-	wpAjax.urlStart = getUrlStart(window.location.href);
 	wpAjax.getLocations = function($http, onLocations){
 		var locationsRestUrl = "wp-en/wp-json/taxonomies/locationTaxonomy/terms";
 		var url = wpAjax.urlStart + locationsRestUrl;	
@@ -38,6 +39,7 @@ var wpAjax = {};
 			for(var i = 0; i < locations.length; i+=1){
 				if(locations[i].slug == slug){
 					onLocation(locations[i]);
+					break;
 				}
 			}
 		});
@@ -49,6 +51,27 @@ var wpAjax = {};
 			onCategories(allCategories);
 		});
 	};
+	wpAjax.getCategory = function($http, slug, onCategory){
+		getAllCategories($http, function(allCategories){
+			for(var i = 0; i < allCategories.length; i+=1){
+				if(allCategories[i].slug == slug){
+					onCategory(allCategories[i]);
+					break;
+				}
+			}
+		});
+	}
+	function buildCategoriesParentTree(allCategories){
+		var tree = {};
+		
+		for(var i = 0; i < allCategories.length; i+=1){
+			var category = allCategories[i];
+			tree[category.slug] = category.parent;
+		}
+		
+		return tree;
+	}
+	
 	wpAjax.getCategories = function($http, locationSlug, parentSlug, onCategories){		
 		getAllCategories($http, function(allCategories){
 			var categories = [];
@@ -74,35 +97,30 @@ var wpAjax = {};
 			onCategories(categories);
 		});
 	};
-	function getIfHasSameParent(category, searchedSlug, allCategories){
-		hasSameParent = false;
+	function getIfHasSameSlugRecursively(slug, searchedSlug, parentsTree){		
+		var currentSlug = slug;
+		var hasSameParent = false;
 		
-		var parentSlug = category.parent ? category.parent.slug : null;
-		
-		while(parentSlug && !hasSameParent){
-			if(parentSlug == searchedSlug){
+		while(currentSlug && !hasSameParent){
+			if(currentSlug == searchedSlug){
 				hasSameParent = true;
 			} 
 			else {
-				for(var i = 0; i < allCategories.length; i+=1){
-					if(allCategories[i].slug == parentSlug){
-						if(allCategories[i].parent){
-							parentSlug = allCategories[i].parent.slug;
-						}
-						else{
-							parentSlug = null;
-						}						
-					}
-				}
+				var parentElement = parentsTree[currentSlug];
+				currentSlug = parentElement ? parentElement.slug : null;
 			}			
 		}
 		
 		return hasSameParent;
 	};
-	wpAjax.getSearchResults = function($http, locationSlug, categorySlug, onResults){
+	wpAjax.getSearchResults = function($http, locationSlug, categorySlug, pageIndex, onResults){
 		getAllCategories($http, function(allCategories){
-			var searchResultsRestUrl = "wp-en/wp-json/servicePostPlugin/services";
+			var categoriesTree = buildCategoriesParentTree(allCategories);
+			var postsPerPageFilter = 'filter[posts_per_page]=' + wpAjax.getPostsPerPage();
+			var offsetFilter = 'filter[offset]=' + pageIndex * wpAjax.getPostsPerPage();
+			var searchResultsRestUrl = "wp-en/wp-json/servicePostPlugin/services?" + postsPerPageFilter + "&" + offsetFilter;
 			var url = wpAjax.urlStart + searchResultsRestUrl;
+			
 			getData($http, url, function(allServices){
 				var services = [];
 				
@@ -111,8 +129,8 @@ var wpAjax = {};
 					
 					var isSameType = false;
 					var types = service.terms.serviceTypeTaxonomy;
-					for(var i = 0; i < types.length && !isSameType; i+=1){
-						if(types[i].slug == categorySlug || getIfHasSameParent(types[i], categorySlug, allCategories)){
+					for(var j = 0; j < types.length && !isSameType; j+=1){
+						if(getIfHasSameSlugRecursively(types[j].slug, categorySlug, categoriesTree)){
 							isSameType = true;
 						}
 					}
@@ -123,8 +141,8 @@ var wpAjax = {};
 					
 					var isSameLocation = false;
 					var locations = service.terms.locationTaxonomy;
-					for(var i = 0; i < locations.length && !isSameLocation; i+=1){
-						if(locations[i].slug == locationSlug){
+					for(var k = 0; k < locations.length && !isSameLocation; k+=1){
+						if(locations[k].slug == locationSlug){
 							isSameLocation = true;
 						}
 					}
