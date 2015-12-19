@@ -8,3 +8,5 @@ http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html
 How to pull from forked branch:
 http://stackoverflow.com/a/15943715
 http://www.jonathanmedd.net/2013/06/git-remote-add-upstream-fatal-remote-upstream-already-exists.html
+
+Adding some test stuff...
