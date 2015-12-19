@@ -9,4 +9,6 @@ How to pull from forked branch:
 http://stackoverflow.com/a/15943715
 http://www.jonathanmedd.net/2013/06/git-remote-add-upstream-fatal-remote-upstream-already-exists.html
 
-Adding some test stuff...
+// Use this in git shell to pull from master branch:
+git fetch upstream
+git merge upstream/master
